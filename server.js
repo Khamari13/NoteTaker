@@ -1,11 +1,12 @@
-const express = reuire("express");
+const express = require("express");
 const app = express();
 const path = require('path');
 const fs = require("fs");
+
 const PORT = process.env.PORT || 8080;
 const savedNotes = require("./db/db.json");
 
-app.use(express.urlencode({ extended: true }));
+app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
 app.use(express.static('public'))
 
@@ -32,12 +33,19 @@ app.post('/api/notes', function (req, res) {
             if(err) {
                 throw err;
             }
+            res.sendStatus(202)
         }
     )
 })
 
 app.delete('/api/notes/:id', function (req, res) {
-
+    let id = req.params.id
+    
+    for (let i =0; i < savedNotes; i++) {
+        if (id == savedNotes[i].title){
+            savedNotes.splice(i, 1)
+        }
+    }
 
     fs.writefile(
         "db.json",
@@ -46,21 +54,27 @@ app.delete('/api/notes/:id', function (req, res) {
             if(err) {
                 throw err;
             }
+            res.sendStatus(202)
         }
     )
 })
 
 
 
-fs.readfile(
-    "db.json",
-    (err, results) => {
-        if(err) {
-            throw err;
-        }else {
-            notes = JSON.parse
-        }
-    }
-)
+
+// fs.readfile(
+//     "db.json",
+//     (err, results) => {
+//         if(err) {
+//             throw err;
+//         }else {
+//             notes = JSON.parse
+//         }
+//     }
+// )
+
+app.listen(PORT, function() {
+    console.log("App listening on PORT: " + PORT);
+  });
 
 
