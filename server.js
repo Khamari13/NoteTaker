@@ -16,18 +16,41 @@ app.get('/notes', function (req, res) {
 
 //api routes
 app.get('/api/notes', function (req, res) {
-    return res.json()
+    return res.json(savedNotes)
 })
 
-fs.writefile(
-    "db.json",
-    JSON.stringify(notes), 
-    (err) => {
-        if(err) {
-            throw err;
+//api post request
+app.post('/api/notes', function (req, res) {
+    const clientNote = req.body;
+    clientNote.id = savedNotes.length + 1;
+
+    savedNotes.push(clientNote)
+    fs.writefile(
+        "db.json",
+        JSON.stringify(savedNotes), 
+        (err) => {
+            if(err) {
+                throw err;
+            }
         }
-    }
-)
+    )
+})
+
+app.delete('/api/notes/:id', function (req, res) {
+
+
+    fs.writefile(
+        "db.json",
+        JSON.stringify(savedNotes), 
+        (err) => {
+            if(err) {
+                throw err;
+            }
+        }
+    )
+})
+
+
 
 fs.readfile(
     "db.json",
