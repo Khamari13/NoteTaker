@@ -10,3 +10,14 @@ fs.writefile(
         }
     }
 )
+
+fs.readfile(
+    "db.json",
+    (err, results) => {
+        if(err) {
+            throw err;
+        }else {
+            notes = JSON.parse
+        }
+    }
+)
