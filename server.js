@@ -20,23 +20,23 @@ app.get('/api/notes', function (req, res) {
     return res.json(savedNotes)
 })
 
-//api post request
-app.post('/api/notes', function (req, res) {
-    let clientNote = req.body;
-    clientNote.id = savedNotes.length +1
-    savedNotes.push(clientNote)
-    fs.writeFile("./db/db.json", JSON.stringify(savedNotes), err =>{
-        if (err) console.log(err)
-        res.send(savedNotes)
-      })
-})
-
 app.delete('/api/notes/:id', function (req, res) {
     let uniqId = parseInt(req.params.id)
     let uniqArr = savedNotes.filter(function(newNote){
         newNote.id !== uniqId
     })
     fs.writeFile("./db/db.json", JSON.stringify(uniqArr), err =>{
+        if (err) console.log(err)
+        res.send(savedNotes)
+      })
+})
+
+//api post request
+app.post('/api/notes', function (req, res) {
+    let clientNote = req.body;
+    clientNote.id = savedNotes.length +1
+    savedNotes.push(clientNote)
+    fs.writeFile("./db/db.json", JSON.stringify(savedNotes), err =>{
         if (err) console.log(err)
         res.send(savedNotes)
       })
