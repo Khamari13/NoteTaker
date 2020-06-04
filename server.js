@@ -22,59 +22,30 @@ app.get('/api/notes', function (req, res) {
 
 //api post request
 app.post('/api/notes', function (req, res) {
-    const clientNote = req.body;
-    clientNote.id = savedNotes.length + 1;
-
+    let clientNote = req.body;
+    clientNote.id = savedNotes.length +1
     savedNotes.push(clientNote)
-    fs.writefile(
-        "db.json",
-        JSON.stringify(savedNotes), 
-        (err) => {
-            if(err) {
-                throw err;
-            }
-            res.sendStatus(202)
-        }
-    )
+    fs.writeFile("./db/db.json", JSON.stringify(savedNotes), err =>{
+        if (err) console.log(err)
+        res.send(savedNotes)
+      })
 })
 
 app.delete('/api/notes/:id', function (req, res) {
-    let id = req.params.id
-    
-    for (let i =0; i < savedNotes; i++) {
-        if (id == savedNotes[i].title){
-            savedNotes.splice(i, 1)
-        }
-    }
-
-    fs.writefile(
-        "db.json",
-        JSON.stringify(savedNotes), 
-        (err) => {
-            if(err) {
-                throw err;
-            }
-            res.sendStatus(202)
-        }
-    )
+    let uniqId = parseInt(req.params.id)
+    let uniqArr = savedNotes.filter(function(newNote){
+        newNote.id !== uniqId
+    })
+    fs.writeFile("./db/db.json", JSON.stringify(uniqArr), err =>{
+        if (err) console.log(err)
+        res.send(savedNotes)
+      })
 })
 
-
-
-
-// fs.readfile(
-//     "db.json",
-//     (err, results) => {
-//         if(err) {
-//             throw err;
-//         }else {
-//             notes = JSON.parse
-//         }
-//     }
-// )
-
+//Port Listener
 app.listen(PORT, function() {
     console.log("App listening on PORT: " + PORT);
   });
+
 
 
